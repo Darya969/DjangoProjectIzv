@@ -1,0 +1,12 @@
+@keyframes example-animation {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.animated-element {
+  animation: example-animation 1s ease-in-out;
+}
+
+.animated-element {
+  opacity: 0;
+}
