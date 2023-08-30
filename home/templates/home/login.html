@@ -1,0 +1,52 @@
+{% extends 'base_authorization.html' %}
+
+{% block title %}
+Авторизация
+{% endblock %}
+
+{% block content %}
+<br><br>
+<button type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent"
+        aria-controls="navbarToggleExternalContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+    <a class="btn btn-lg text-dark" href="{% url 'home' %}">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
+</button>
+<br><br>
+<div class="d-flex mt-5 align-items-center justify-content-center" style="height: 350px;">
+    <div class="bg-light btn btn-dark position-relative" style="opacity: 0.9; width: 600px">
+        <h1 class="text-dark">Авторизация</h1>
+        <form method="post">
+            {% csrf_token %}
+            <!--{{ form.as_p }}-->
+            <div class="form-group row text-left" style="color: red; overflow-x: hidden; white-space: pre-wrap">
+                {{ form.non_field_errors }}
+                {{ form.username.errors }}
+                {{ form.password.errors }}
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label text-dark text-left" for="{{ form.username.label }}">
+                    Имя пользователя: </label>
+                <div class="col-sm-7">
+                    {{ form.username }}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label text-dark text-left" for="{{ form.password.label }}">
+                    Пароль: </label>
+                <div class="col-sm-7">
+                    {{ form.password }}
+                </div>
+            </div>
+            <br>
+            <button type="submit" class="btn bg-dark text-white">Войти</button>
+            <br><br>
+        </form>
+    </div>
+</div>
+
+
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br>
+{% endblock %}

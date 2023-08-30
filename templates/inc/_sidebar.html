@@ -1,0 +1,18 @@
+{% load home_tags %}
+{% comment %}
+<div class="list-group">
+  {% get_list_categories as categories %}
+  {% for item in categories %}
+  <!--<a href="#" class="list-group-item list-group-item-action active">
+    Cras justo odio
+  </a>
+  <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>-->
+  <a href="{% url 'category' item.pk %}" class="list-group-item list-group-item-action">{{ item.title }}</a>
+  <!--<a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
+  <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>-->
+  {% endfor %}
+</div>
+
+<br>
+{% endcomment %}
+{% show_categories %}

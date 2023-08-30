@@ -1,0 +1,316 @@
+{% extends 'base-home-index.html' %}
+{% load widget_tweaks %}
+{% block title %}
+Главная
+{% endblock %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags == 'error' %}
+            <div class="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+        {% else %}
+            <div class="alert alert-{{ message.tags }}" role="alert">
+              {{ message }}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+<form action="{% url 'home-index' %}" method="post" id="personForm">
+    {% csrf_token %}
+    <div style="color: red">
+        {{ form.non_field_errors }}
+    </div>
+    {% if errors %}
+      <div class="alert alert-danger" role="alert">
+        <ul>
+          {% for field, error_list in errors.items %}
+            {% for error in error_list %}
+              <li>{{ field }}: {{ error }}</li>
+            {% endfor %}
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+      <div class="container">
+          <div class="row justify-content-end">
+            <div class="col-md-4">
+              {% comment %}<div class="form-group float-right">
+                <label for="{{ form.DATE_ZAP.id_for_label }}">Отчетный период</label>
+                {{ form.DATE_ZAP|attr:"readonly:True" }}
+              </div>{% endcomment %}
+                <div class="form-group float-right">
+                    <label for="{{ form.DATE_ZAP.id_for_label }}">Отчетный период</label>
+                    {{ form.DATE_ZAP|attr:"readonly:True" }}
+                    <input type="hidden" name="month_closure_date" value="{{ month_closure_date }}">
+                </div>
+            </div>
+          </div>
+        </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="{{ form.place_of_detection.id_for_label }}">Место выявления</label>
+            {{ form.place_of_detection }}
+            {{ form.place_of_detection.errors }}
+        </div>
+        <div class="form-group col-md-2 mt-4">
+          <button style="margin-top: 7px" type="button" class="btn btn-outline-dark me-md-2"
+                  id="activate-field">Указать точно</button>
+       </div>
+       <div class="form-group col-md-6">
+           <label style="color: #f8f9fa">/ </label>
+                {{ form.mesto_obracheniya|attr:"disabled:True" }}
+       </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="{{ form.lastname.id_for_label }}">Фамилия</label>
+            {{ form.lastname }}
+            {{ form.lastname.errors }}
+        </div>
+        <div class="form-group col-md-4">
+            <label for="{{ form.firstname.id_for_label }}">Имя</label>
+            {{ form.firstname }}
+            {{ form.firstname.errors }}
+        </div>
+        <div class="form-group col-md-4">
+            <label for="{{ form.middle_name.id_for_label }}">Отчество</label>
+            {{ form.middle_name }}
+            {{ form.middle_name.errors }}
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            <label for="{{ form.sex.id_for_label }}">Пол</label>
+            {{ form.sex }}
+            {{ form.sex.errors }}
+        </div>
+        <div class="form-group col-md-3">
+            <label for="{{ form.date_bith.id_for_label }}">Дата рождения</label>
+            {{ form.date_bith }}
+            {{ form.date_bith.errors }}
+        </div>
+    </div>
+    <fieldset class="border border-secondary border-solid p-3">
+        <legend class="ml-5 col-md-1" style="padding: 3px 6px;">Адрес</legend>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="{{ form.locality.id_for_label }}">Населенный пункт</label>
+                {{ form.locality }}
+                {{ form.locality.errors }}
+            </div>
+            <div class="form-group col-md-4">
+                <label for="{{ form.district.id_for_label }}">Район</label>
+                {{ form.district }}
+                {{ form.district.errors }}
+            </div>
+            <div class="form-group col-md-4">
+                <label for="{{ form.street.id_for_label }}">Улица</label>
+                {{ form.street }}
+                {{ form.street.errors }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                <label for="{{ form.home.id_for_label }}">Дом</label>
+                {{ form.home }}
+                {{ form.home.errors }}
+            </div>
+            <div class="form-group col-md-3">
+                <label for="{{ form.body.id_for_label }}">Корпус</label>
+                {{ form.body }}
+                {{ form.body.errors }}
+            </div>
+            <div class="form-group col-md-3">
+                <label for="{{ form.flat.id_for_label }}">Квартира</label>
+                {{ form.flat }}
+                {{ form.flat.errors }}
+            </div>
+            <div class="form-group col-md-3">
+                <label for="{{ form.citizen.id_for_label }}">Житель</label>
+                {{ form.citizen }}
+                {{ form.citizen.errors }}
+            </div>
+        </div>
+    </fieldset>
+    <br>
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            <label for="{{ form.social_group.id_for_label }}">Социальная группа</label>
+            {{ form.social_group }}
+            {{ form.social_group.errors }}
+        </div>
+        <div class="form-group col-md-6">
+            <label for="{{ form.job.id_for_label }}">Место работы</label>
+            {{ form.job }}
+            {{ form.job.errors }}
+        </div>
+        <div class="form-group col-md-3">
+            <label for="{{ form.post.id_for_label }}">Должность</label>
+            {{ form.post }}
+            {{ form.post.errors }}
+        </div>
+    </div>{% comment %}{% endcomment %}
+    <div class="form-row">
+        <div class="form-group col-md-2">
+            <label for="{{ form.date_of_application.id_for_label }}">Дата обращения</label>
+            {{ form.date_of_application }}
+            {{ form.date_of_application.errors }}
+        </div>
+        <div class="form-group col-md-2">
+            <label for="{{ form.category1.id_for_label }}">Категория больного</label>
+            {{ form.category1 }}
+            <div class="invalid-feedback">
+                {{ form.category1.errors }}
+            </div>
+        </div>
+        <div class="form-group col-md-2">
+            <label for="{{ form.group_of_diagnoses.id_for_label }}">Группа диагнозов</label>
+            <select name="group_of_diagnoses" id="id_group_of_diagnoses" class="form-control col-12">
+                <option value="">----------</option>
+                {% for group in groupobj %}
+                    <option value="{{ group.id }}">{{ group.title }}</option>
+                {% endfor %}
+            </select>
+            {{ form.group_of_diagnoses.errors }}
+        </div>
+        <div class="form-group col-md-6">
+            <label for="{{ form.diagnosis.id_for_label }}" style="margin-left: 15px">Диагноз</label>
+            <div class="col-lg-12 col-md-8 col-sm-12">
+                <select name="{{ form.diagnosis.name }}" id="{{ form.diagnosis.id_for_label }}"
+                        class="form-control col-12">
+                    <option value="">----------</option>
+                </select>
+                {{ form.diagnosis.errors }}
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-7">
+            <label for="{{ form.circumstances_of_detection.id_for_label }}">Обстоятельства выявления</label>
+            {{ form.circumstances_of_detection }}
+            {{ form.circumstances_of_detection.errors }}
+        </div>
+        <div class="form-group col-md-5">
+            <label for="{{ form.date_of_establishment.id_for_label }}">Дата установления</label>
+            {{ form.date_of_establishment }}
+            {{ form.date_of_establishment.errors }}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            <label for="{{ form.physician.id_for_label }}">Врач</label>
+            {{ form.physician }}
+            {{ form.physician.errors }}
+        </div>
+        <div class="form-group col-md-2 mt-4">
+          <button style="margin-top: 7px" type="button" class="btn btn-outline-dark me-md-2"
+                  id="activate">Если врача нет в списке</button>
+        </div>
+        <div class="form-group col-md-3">
+           <label style="color: #f8f9fa">/ </label>
+                {{ form.VRACH|attr:"disabled:True" }}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="{{ form.laboratory_confirmation.id_for_label }}">Лабораторное подтверждение</label>
+            {{ form.laboratory_confirmation }}
+            {{ form.laboratory_confirmation.errors }}
+        </div>
+        <div class="form-group col-md-1 mt-4">
+          <button style="margin-top: 7px" type="button" class="btn btn-outline-dark me-md-2"
+                  id="activate-2">Другое</button>
+        </div>
+        <div class="form-group col-md-3">
+           <label style="color: #f8f9fa">/ </label>
+                {{ form.LAB_POT_RAS|attr:"disabled:True" }}
+        </div>
+    </div>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <button type="submit" class="btn btn-outline-dark me-md-2">Записать</button>
+    </div>
+</form>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script>
+var activateButton1 = document.getElementById('activate-field');
+var disabledField1 = document.getElementById('{{ form.mesto_obracheniya.id_for_label }}');
+
+activateButton1.onclick = function() {
+    disabledField1.disabled = false;
+};
+</script>
+<script>
+var activateButton2 = document.getElementById('activate');
+var disabledField2 = document.getElementById('{{ form.VRACH.id_for_label }}');
+
+activateButton2.onclick = function() {
+    disabledField2.disabled = false;
+};
+</script>
+<script>
+var activateButton3 = document.getElementById('activate-2');
+var disabledField3 = document.getElementById('{{ form.LAB_POT_RAS.id_for_label }}');
+
+activateButton3.onclick = function() {
+    disabledField3.disabled = false;
+};
+</script>
+<script>
+  $(document).ready(function() {
+      $('#id_group_of_diagnoses').change(function() {
+        var group_id = $(this).val();
+        $.ajax({
+          url: '/get_diagnoses/',
+          data: {group_id: group_id},
+          success: function(response) {
+            var diagnoses = response.diagnoses;
+            var options = '<option value="">Выберите диагноз</option>';
+            for (var i = 0; i < diagnoses.length; i++) {
+              options += '<option value="' + diagnoses[i].id + '">' + diagnoses[i].title + '</option>';
+            }
+            $('#id_diagnosis').html(options);
+          }
+        });
+      });
+    });
+</script>
+<script>
+  $( function() {
+    $( "#id_date_bith" ).datepicker({
+      dateFormat: 'dd.mm.yy',
+      monthNames: ['Январь', 'Февраль', 'Март', 'Апрель',
+                  'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь',
+                  'Октябрь', 'Ноябрь', 'Декабрь'],
+      dayNamesMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+      firstDay: 1
+    });
+    $( "#id_date_of_application" ).datepicker({
+      dateFormat: 'dd.mm.yy',
+      monthNames: ['Январь', 'Февраль', 'Март', 'Апрель',
+                  'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь',
+                  'Октябрь', 'Ноябрь', 'Декабрь'],
+      dayNamesMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+      firstDay: 1
+    });
+    $( "#id_date_of_establishment" ).datepicker({
+      dateFormat: 'dd.mm.yy',
+      monthNames: ['Январь', 'Февраль', 'Март', 'Апрель',
+                  'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь',
+                  'Октябрь', 'Ноябрь', 'Декабрь'],
+      dayNamesMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+      firstDay: 1
+    });
+  } );
+</script>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% if home == "По диагнозам" and registered == "Все зарегистрированные" %}
+  {% with queryset=IndexForm.objects.filter(DATE_ZAP__range=[start_date, end_date])
+                    .values('diagnosis__title').order_by().annotate(total=Count('diagnosis__title')) %}
+    <ul>
+    {% for item in queryset %}
+      <li>{{ item.diagnosis__title }}: {{ item.total }}</li>
+    {% endfor %}
+    </ul>
+  {% endwith %}
+{% endif %}

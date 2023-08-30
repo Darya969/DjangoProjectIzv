@@ -1,0 +1,69 @@
+<style>
+    #preloader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #ffffff;
+        z-index: 9999;
+        opacity: 0.5;
+    }
+    #preloader.hide-preloader {
+        animation: hidePreloader 1s;
+    }
+
+    #preloader.preloader-hidden {
+        display: none;
+    }
+
+    @keyframes hidePreloader {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+</style>
+
+<script>
+    // Функция для показа прелоадера
+    function showPreloader() {
+      var preloader = document.getElementById('preloader');
+      preloader.style.display = 'flex';
+    }
+
+    // Функция для скрытия прелоадера
+    function hidePreloader() {
+      var preloader = document.getElementById('preloader');
+      preloader.style.display = 'none';
+    }
+
+    // Отображение прелоадера при загрузке страницы
+    window.addEventListener('load', function() {
+      showPreloader();
+    });
+
+    // Отображение прелоадера перед переходом на новую страницу
+    window.addEventListener('beforeunload', function() {
+      showPreloader();
+    });
+
+    // Скрытие прелоадера после окончания загрузки ресурсов страницы
+    window.addEventListener('loadend', function() {
+      hidePreloader();
+    });
+
+    // Скрытие прелоадера после завершения перехода на новую страницу
+    window.addEventListener('pageshow', function() {
+      hidePreloader();
+    });
+</script>
+
+<div id='preloader'>
+    <img src="/static/home/img/loader.gif" alt="preloader">
+</div>

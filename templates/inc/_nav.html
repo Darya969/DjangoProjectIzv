@@ -1,0 +1,42 @@
+<div class="container-fluid">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{% url 'home' %}"><img src="/static/home/img/logo1.png" width="100"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-item nav-link active" href="{% url 'home' %}"><font face="Monaco">Главная</font><span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-item nav-link" href="#about"><font face="Monaco">| О нас</font></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-item nav-link" href="#work"><font face="Monaco">| Режим работы</font></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-item nav-link" href="#activity"><font face="Monaco">| Вид деятельности</font></a>
+          </li>
+          <li class="nav-item">
+          </li>
+          <li class="nav-item">
+            <a class="nav-item nav-link" href="#contacts"><font face="Monaco">| Контакты</font></a>
+          </li>
+          {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-item nav-link" href="{% url 'home-index' %}"><font face="Monaco">| Экстренные извещения</font></a>
+          </li>
+          {% endif %}
+        </ul>
+        <span class="navbar-text">
+          {% if request.user.is_authenticated %}
+          Вы вошли как <br>{{ user.last_name }} {{ user.first_name }}| <a href="{% url 'logout' %}">Выход</a>
+          {% else %}
+          <a href="{% url 'login' %}">Войти</a>
+          {% endif %}
+
+        </span>
+    </div>
+  </nav>
+</div>

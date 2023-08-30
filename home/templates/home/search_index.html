@@ -1,0 +1,183 @@
+{% extends 'base-home-index.html' %}
+
+{% block title %}
+Поиск
+{% endblock %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags == 'error' %}
+            <div class="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+        {% else %}
+            <div class="alert alert-{{ message.tags }}" role="alert">
+              {{ message }}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+<h1 class="display-3">Поиск</h1>
+<br>
+
+<form action="{% url 'search' %}" method="get" id="personForm">
+    <div style="color: red">
+        {{ form.non_field_errors }}
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="{{ form.lastname.id_for_label }}">Фамилия</label>
+            <input class="form-control" type="search" type="text" name="lastname" id="id_lastname">
+            {{ form.lastname.errors }}
+        </div>
+        <div class="form-group col-md-4">
+            <label for="{{ form.firstname.id_for_label }}">Имя</label>
+            <input class="form-control" type="search" type="text" name="firstname"  id="id_firstname">
+            {{ form.firstname.errors }}
+        </div>
+        <div class="form-group col-md-4">
+            <label for="{{ form.middle_name.id_for_label }}">Отчество</label>
+            <input class="form-control" type="search" type="text" name="middle_name"  id="id_middle_name">
+            {{ form.middle_name.errors }}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            <label for="{{ form.date_bith.id_for_label }}">Дата рождения</label>
+            <input class="form-control" type="search" type="text" name="date_bith" id="id_date_bith">
+            {{ form.date_bith.errors }}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            <label for="{{ form.sex.id_for_label }}">Учитывать пол</label>
+            <input type="checkbox" onclick="if(this.checked)
+            {this.nextSibling.style.display=''}
+            else {this.nextSibling.style.display='none';
+            this.nextSibling.value='';}"><select id="id_sex" class="form-control" name="sex"
+                                                 style="display:none;">
+                <option disabled selected="true">----------</option>
+                <option value="1">Мужской</option>
+                <option value="2">Женский</option>
+            </select>
+            {{ form.sex.errors }}
+        </div>
+        <div class="form-group col-md-5">
+            <label for="{{ form.date_bith.id_for_label }}">Учитывать район</label>
+            <input type="checkbox" onclick="if(this.checked)
+            {this.nextSibling.style.display=''}
+            else {this.nextSibling.style.display='none';
+            this.nextSibling.value='';}"><select id="id_district" class="form-control" name="district"
+                                                 style="display:none;">
+                {% for el in question2 %}
+                    <option id="{{ el.id }}">{{ el.title }}</option>
+                {% endfor %}
+            </select>
+            {{ form.date_bith.errors }}
+        </div>
+    </div>
+    <label for="{{ form.date_bith.id_for_label }}">Учитывать адрес</label>
+    <input type="checkbox" onclick="if(this.checked)
+            {this.nextSibling.style.display=''}
+            else {this.nextSibling.style.display='none';
+            this.nextSibling.value='';}"><fieldset class="border border-secondary border-solid p-3" style="display:none;">
+        <legend class="ml-5 col-md-1" style="padding: 3px 6px;">Адрес</legend>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="{{ form.locality.id_for_label }}">Населенный пункт</label>
+                <input class="form-control" type="search" type="text"
+                                                name="locality" id="id_locality" placeholder="г. Саратов">
+                {{ form.locality.errors }}
+            </div>
+            <div class="form-group col-md-6">
+                <label for="{{ form.street.id_for_label }}">Улица</label>
+                <input class="form-control" type="search" type="text" name="street" id="id_street">
+                {{ form.street.errors }}
+            </div>
+        </div>
+    </fieldset>
+
+    <br>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button type="submit" class="btn btn-outline-dark me-md-2" name="button">Найти</button>
+    </div>
+</form>
+    <br>
+{% if form %}
+<div style="width: 100%; overflow: auto;">
+    <table class="table">
+        <thead style="background-color: #d4b8a3">
+            <tr>
+                <th class="p-3">Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Пол</th>
+                <th>Дата рождаения</th>
+                <th>Адрес</th>
+                <th>Диагноз</th>
+                <th>Дата установления диагноза</th>
+                <th>Место выявления</th>
+                <th>Обстоятельства выявления</th>
+                <th>Врач</th>
+                <th>Дата обращения</th>
+            </tr>
+        </thead>
+        {% for el in form %}
+        <tr>
+            <td class="w-auto">{{ el.lastname }}</td>
+            <td class="w-auto">{{ el.firstname }}</td>
+            <td class="w-auto">{{ el.middle_name }}</td>
+            <td class="w-auto">{{ el.sex }}</td>
+            <td style="white-space: nowrap;">{{ el.date_bith }}</td>
+            <td style="white-space: nowrap;">{{ el.locality }},
+                {{ el.district }},
+                <br>{{ el.street }},
+                {{ el.home }}
+                {{ el.body }}
+                {{ el.flat }} </td>
+            <td>{{ el.diagnosis.mkb }}</td>
+            <td style="white-space: nowrap;">{{ el.date_of_establishment }}</td>
+            <td>{{ el.place_of_detection }}</td>
+            <td>{{ el.circumstances_of_detection }}</td>
+            <td>{{ el.physician }}</td>
+            <td style="white-space: nowrap;">{{ el.date_of_application }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endif %}
+<br>
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <a href="{% url 'search' %}" role="button" aria-pressed="true" class="btn btn-outline-dark me-md-2">Очистить</a>
+</div>
+
+<script>
+  $( function() {
+    $( "#id_date_bith" ).datepicker({
+      dateFormat: 'dd.mm.yy',
+      monthNames: ['Январь', 'Февраль', 'Март', 'Апрель',
+                  'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь',
+                  'Октябрь', 'Ноябрь', 'Декабрь'],
+      dayNamesMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+      firstDay: 1
+    });
+    $( "#id_date_of_application" ).datepicker({
+      dateFormat: 'dd.mm.yy',
+      monthNames: ['Январь', 'Февраль', 'Март', 'Апрель',
+                  'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь',
+                  'Октябрь', 'Ноябрь', 'Декабрь'],
+      dayNamesMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+      firstDay: 1
+    });
+    $( "#id_date_of_establishment" ).datepicker({
+      dateFormat: 'dd.mm.yy',
+      monthNames: ['Январь', 'Февраль', 'Март', 'Апрель',
+                  'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь',
+                  'Октябрь', 'Ноябрь', 'Декабрь'],
+      dayNamesMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+      firstDay: 1
+    });
+  } );
+</script>
+{% endblock %}
