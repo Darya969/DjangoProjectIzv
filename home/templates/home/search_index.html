@@ -57,9 +57,9 @@
             else {this.nextSibling.style.display='none';
             this.nextSibling.value='';}"><select id="id_sex" class="form-control" name="sex"
                                                  style="display:none;">
-                <option disabled selected="true">----------</option>
-                <option value="1">Мужской</option>
-                <option value="2">Женский</option>
+                {% for el in question3 %}
+                    <option id="{{ el.id }}">{{ el.title }}</option>
+                {% endfor %}
             </select>
             {{ form.sex.errors }}
         </div>

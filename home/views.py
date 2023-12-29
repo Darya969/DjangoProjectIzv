@@ -77,11 +77,14 @@ class Search(LoginRequiredMixin, ListView):
         firstname = self.request.GET.get('firstname')
         middle_name = self.request.GET.get('middle_name')
         date_bith = self.request.GET.get('date_bith')
+        sex = self.request.GET.get('sex')
+        district = self.request.GET.get('district')
+        locality = self.request.GET.get('locality')
+        street = self.request.GET.get('street')
 
         queryset = None
 
-        if self.request.GET.get('lastname' and 'firstname' and 'middle_name' or 'date_bith' or 'sex' or 'district' or
-                                'locality' or 'street'):
+        if self.request.GET.get('lastname' and 'firstname' and 'middle_name'):
             queryset = IndexForm.objects.filter(
                 lastname__contains=lastname,
                 firstname__contains=firstname,
@@ -92,6 +95,37 @@ class Search(LoginRequiredMixin, ListView):
                     firstname__contains=firstname,
                     middle_name__contains=middle_name,
                     date_bith__exact=date_bith)
+            elif self.request.GET.get('lastname' and 'firstname' and 'middle_name' and 'sex'):
+                queryset = IndexForm.objects.filter(
+                    lastname__contains=lastname,
+                    firstname__contains=firstname,
+                    middle_name__contains=middle_name,
+                    sex__title=sex)
+            elif self.request.GET.get('lastname' and 'firstname' and 'middle_name' and 'district'):
+                queryset = IndexForm.objects.filter(
+                    lastname__contains=lastname,
+                    firstname__contains=firstname,
+                    middle_name__contains=middle_name,
+                    district__title=district)
+            elif self.request.GET.get('lastname' and 'firstname' and 'middle_name' and 'locality' and 'street'):
+                queryset = IndexForm.objects.filter(
+                    lastname__contains=lastname,
+                    firstname__contains=firstname,
+                    middle_name__contains=middle_name,
+                    locality__contains=locality,
+                    street__contains=street)
+            elif self.request.GET.get(
+                    'lastname' and 'firstname' and 'middle_name' and 'date_bith' and 'sex' and 'district' and
+                    'locality' and 'street'):
+                queryset = IndexForm.objects.filter(
+                    lastname__contains=lastname,
+                    firstname__contains=firstname,
+                    middle_name__contains=middle_name,
+                    date_bith__exact=date_bith,
+                    sex__title=sex,
+                    district__title=district,
+                    locality__contains=locality,
+                    street__contains=street)
 
         elif 'button' in self.request.GET:
             today = date.today()
@@ -107,6 +141,7 @@ class Search(LoginRequiredMixin, ListView):
         val = self.request.GET.get('lastname')
         context['search'] = val
         context['question2'] = District.objects.values('title').order_by('id')
+        context['question3'] = Sex.objects.values('title').order_by('id')
         return context
 
 class Report(LoginRequiredMixin, ListView):
