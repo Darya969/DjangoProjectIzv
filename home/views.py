@@ -88,7 +88,7 @@ class Search(LoginRequiredMixin, ListView):
         elif 'button' in self.request.GET:
             today = date.today()
             start_of_month = date(today.year, today.month, 1)
-            end_of_month = date(today.year, today.month + 1, 1) - timedelta(days=1)
+            end_of_month = start_of_month + timedelta(days=32) - timedelta(days=1)
             queryset = IndexForm.objects.filter(DATE_ZAP__range=[start_of_month, end_of_month])
 
         return queryset
