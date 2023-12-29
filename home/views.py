@@ -76,6 +76,7 @@ class Search(LoginRequiredMixin, ListView):
         lastname = self.request.GET.get('lastname')
         firstname = self.request.GET.get('firstname')
         middle_name = self.request.GET.get('middle_name')
+        date_bith = self.request.GET.get('date_bith')
 
         queryset = None
 
@@ -85,6 +86,13 @@ class Search(LoginRequiredMixin, ListView):
                 lastname__contains=lastname,
                 firstname__contains=firstname,
                 middle_name__contains=middle_name)
+            if self.request.GET.get('lastname' and 'firstname' and 'middle_name' and 'date_bith'):
+                queryset = IndexForm.objects.filter(
+                    lastname__contains=lastname,
+                    firstname__contains=firstname,
+                    middle_name__contains=middle_name,
+                    date_bith__exact=date_bith)
+
         elif 'button' in self.request.GET:
             today = date.today()
             start_of_month = date(today.year, today.month, 1)
